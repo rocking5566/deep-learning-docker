@@ -1,0 +1,6 @@
+ARG tf_ver=1.8.0
+FROM keras:tf_${tf_ver}
+
+RUN apt-get install -y libprotobuf-dev protobuf-compiler
+RUN git clone --branch 20180129 https://github.com/Tencent/ncnn.git /opt/ncnn_20180129
+RUN cd /opt/ncnn_20180129 && mkdir -p build && cd build && cmake .. && make -j4 && make install
