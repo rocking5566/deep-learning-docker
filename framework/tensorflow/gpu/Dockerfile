@@ -1,4 +1,4 @@
-ARG tf_ver=1.8.0
+ARG tf_ver=1.11.0
 FROM tensorflow/tensorflow:${tf_ver}-devel-gpu-py3
 
 RUN apt-get update && \
@@ -92,5 +92,5 @@ RUN apt update && \
 
 WORKDIR /
 
-CMD jupyter notebook --allow-root --port=8888 --ip=0.0.0.0 & \
+CMD jupyter notebook --allow-root --port=8888 --ip=127.0.0.1 & \
     tensorboard --logdir=/log/tensorboard

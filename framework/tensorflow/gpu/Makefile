@@ -1,7 +1,7 @@
 DATA?="${HOME}/Data"
 DOCKER_FILE=Dockerfile
 DOCKER=nvidia-docker
-TF_VER?=1.8.0
+TF_VER?=1.11.0
 IMAGE_NAME=tensorflow:$(TF_VER)
 REPO_ROOT?=$(shell dirname `pwd`)/../../
 TMP_DIR=/tmp
