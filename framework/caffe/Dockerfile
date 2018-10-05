@@ -49,4 +49,6 @@ RUN cd opencv-${opencv_version}/build && \
     rm $OPENCV_DIR/opencv-${opencv_version}.zip && \
     rm $OPENCV_DIR/opencv_contrib-${opencv_version}.zip
 
+RUN pip install lmdb
+
 WORKDIR /
