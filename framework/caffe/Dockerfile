@@ -10,7 +10,8 @@ RUN apt-get update && \
     libcanberra-gtk-module \
     libavcodec-dev \
     libavformat-dev \
-    libswscale-dev
+    libswscale-dev \
+    python-tk
 
 # ============= OpenCV =============
 # OpenCV
