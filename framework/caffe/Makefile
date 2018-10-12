@@ -1,7 +1,7 @@
 DATA?="${HOME}/Data"
 DOCKER_FILE=Dockerfile
 DOCKER=nvidia-docker
-IMAGE_NAME=caffe_opencv341
+IMAGE_NAME=caffe_opencv341:gpu
 REPO_ROOT?=$(shell dirname `pwd`)/../
 
 X11_DISPLAY=--env DISPLAY=$(DISPLAY) \
