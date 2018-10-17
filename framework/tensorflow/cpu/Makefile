@@ -1,13 +1,21 @@
 DATA?="${HOME}/Data"
-DOCKER_FILE=Dockerfile
+DOCKER_FILE=../gpu/Dockerfile
 DOCKER=docker
-TF_VER?=1.8.0
+TF_VER?=1.11.0
 IMAGE_NAME=tensorflow:$(TF_VER)-cpu
 REPO_ROOT?=$(shell git rev-parse --show-toplevel)
 
-X11_DISPLAY=--env DISPLAY=$(DISPLAY) \
-	--env="QT_X11_NO_MITSHM=1" \
-	-v /tmp/.X11-unix:/tmp/.X11-unix:ro
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S), Linux)
+  X11_DISPLAY=--env DISPLAY=$(DISPLAY) \
+  	--env="QT_X11_NO_MITSHM=1" \
+  	-v /tmp/.X11-unix:/tmp/.X11-unix:ro
+endif
+ifeq ($(UNAME_S), Darwin)
+  X11_DISPLAY=--env DISPLAY=docker.for.mac.localhost:0 \
+  	--env="QT_X11_NO_MITSHM=1" \
+  	-v /tmp/.X11-unix:/tmp/.X11-unix:ro
+endif
 
 MOUNT_DIR=-v $(REPO_ROOT):/workspace \
 	-v $(DATA):/datasets
@@ -22,7 +30,7 @@ help:
 	@echo "'make notebook' will run docker container for ipython notebook & Tensorboard"
 
 build:
-	$(DOCKER) build -t $(IMAGE_NAME) --build-arg tf_ver=$(TF_VER) -f $(DOCKER_FILE) .
+	$(DOCKER) build -t $(IMAGE_NAME) --build-arg tf_ver=$(TF_VER)-devel-py3 -f $(DOCKER_FILE) .
 
 bash:
 	$(DOCKER) run -it --privileged --rm $(MOUNT_DIR) $(MOUNT_WEBCAM) --net=host $(IMAGE_NAME) bash
