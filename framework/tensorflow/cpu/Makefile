@@ -3,7 +3,7 @@ DOCKER_FILE=Dockerfile
 DOCKER=docker
 TF_VER?=1.8.0
 IMAGE_NAME=tensorflow:$(TF_VER)-cpu
-REPO_ROOT?=$(shell dirname `pwd`)/../../
+REPO_ROOT?=$(shell git rev-parse --show-toplevel)
 
 X11_DISPLAY=--env DISPLAY=$(DISPLAY) \
 	--env="QT_X11_NO_MITSHM=1" \

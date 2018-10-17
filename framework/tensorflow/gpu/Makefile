@@ -3,7 +3,7 @@ DOCKER_FILE=Dockerfile
 DOCKER=nvidia-docker
 TF_VER?=1.11.0
 IMAGE_NAME=tensorflow:$(TF_VER)
-REPO_ROOT?=$(shell dirname `pwd`)/../../
+REPO_ROOT?=$(shell git rev-parse --show-toplevel)
 TMP_DIR=/tmp
 
 X11_DISPLAY=--env DISPLAY=$(DISPLAY) \

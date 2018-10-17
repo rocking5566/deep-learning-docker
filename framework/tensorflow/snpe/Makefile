@@ -4,7 +4,7 @@ DOCKER=docker
 TF_VER?=1.8.0
 SNPE_VER?=1.17.0
 IMAGE_NAME=tensorflow-snpe:$(TF_VER)-$(SNPE_VER)
-REPO_ROOT?=$(shell dirname `pwd`)/../../
+REPO_ROOT?=$(shell git rev-parse --show-toplevel)
 TMP_DIR=/tmp
 
 MOUNT_DIR=-v $(REPO_ROOT):/workspace \

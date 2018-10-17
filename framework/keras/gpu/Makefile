@@ -4,7 +4,7 @@ DOCKER=nvidia-docker
 TF_VER?=1.8.0
 IMAGE_NAME=keras:tf_$(TF_VER)
 NCNN_IMAGE_NAME=keras:ncnn
-REPO_ROOT?=$(shell dirname `pwd`)/../../
+REPO_ROOT?=$(shell git rev-parse --show-toplevel)
 
 X11_DISPLAY=--env DISPLAY=$(DISPLAY) \
 	--env="QT_X11_NO_MITSHM=1" \

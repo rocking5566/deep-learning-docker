@@ -2,7 +2,7 @@ DATA?="${HOME}/Data"
 DOCKER_FILE=Dockerfile
 DOCKER=nvidia-docker
 IMAGE_NAME=caffe2_opencv341
-REPO_ROOT?=$(shell dirname `pwd`)/../../
+REPO_ROOT?=$(shell git rev-parse --show-toplevel)
 
 X11_DISPLAY=--env DISPLAY=$(DISPLAY) \
 	--env="QT_X11_NO_MITSHM=1" \
