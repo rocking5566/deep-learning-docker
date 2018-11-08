@@ -32,7 +32,6 @@ WORKDIR $OPENCV_DIR
 RUN wget https://github.com/Itseez/opencv/archive/${opencv_version}.zip -O opencv-${opencv_version}.zip
 
 RUN unzip opencv-${opencv_version}.zip && \
-    unzip opencv_contrib-${opencv_version}.zip && \
     cd opencv-${opencv_version} &&\
     mkdir build && cd build && \
     cmake -D CMAKE_BUILD_TYPE=Release \
@@ -86,6 +85,8 @@ RUN pip3 install tensorflow-hub
 RUN apt update && \
     apt install -y \
       swig
+
+ENV TEST_TMPDIR /bazel_build
 
 WORKDIR /
 
