@@ -14,7 +14,12 @@ RUN apt-get update && \
     libcanberra-gtk-module \
     libavcodec-dev \
     libavformat-dev \
-    libswscale-dev
+    libswscale-dev \
+    python3-tk \
+    autoconf \
+    automake \
+    libtool \
+    swig
 
 # ============= OpenCV =============
 # OpenCV
@@ -53,8 +58,6 @@ RUN cd opencv-${opencv_version}/build && \
 #RUN pip3 install --upgrade --ignore-installed setuptools && pip3 install --no-cache-dir git+git://github.com/ppwwyyxx/tensorpack
 
 # ============= Tensorflow object detection API =============
-RUN apt-get install -y python3-tk autoconf automake libtool
-
 RUN cd /tensorflow \
     && tensorflow/contrib/makefile/download_dependencies.sh
 
@@ -80,11 +83,6 @@ RUN cd /opt/cocoapi/PythonAPI && sed -i 's/python/python3/g' Makefile && make in
 
 # ============= Tensorflow Hub =============
 RUN pip3 install tensorflow-hub
-
-# ============= swig =============
-RUN apt update && \
-    apt install -y \
-      swig
 
 ENV TEST_TMPDIR /bazel_build
 
