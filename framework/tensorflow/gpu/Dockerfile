@@ -30,7 +30,7 @@ ARG opencv_version=3.4.1
 
 ENV OPENCV_DIR /opt/opencv
 
-RUN mkdir -p $OPENCV_DIR 
+RUN mkdir -p $OPENCV_DIR
 
 WORKDIR $OPENCV_DIR
 
@@ -47,9 +47,7 @@ RUN unzip opencv-${opencv_version}.zip && \
     -D WITH_EIGEN=OFF \
     -D WITH_OPENCL=OFF \
     -D BUILD_opencv_python3=YES \
-  ..
-
-RUN cd opencv-${opencv_version}/build && \
+    .. &&\
     make -j"$(nproc)" && \
     make install && \
     rm $OPENCV_DIR/opencv-${opencv_version}.zip
@@ -68,7 +66,7 @@ RUN cd /tensorflow/tensorflow/contrib/makefile/downloads/protobuf \
     && make install
 RUN ldconfig
 
-ARG tf_model_ver=32e7d660
+ARG tf_model_ver=628b970a
 RUN git clone https://github.com/tensorflow/models.git /opt/tf_model && cd /opt/tf_model && git checkout ${tf_model_ver}
 RUN cd /opt/tf_model/research && protoc object_detection/protos/*.proto --python_out=.
 
