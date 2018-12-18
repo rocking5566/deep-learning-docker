@@ -24,7 +24,7 @@ help:
 	@echo "'make notebook' will run docker container for ipython notebook & Tensorboard"
 
 build:
-	$(DOCKER) build -t $(IMAGE_NAME) --build-arg tf_ver=$(TF_VER) -f $(DOCKER_FILE) .
+	$(DOCKER) build -t $(IMAGE_NAME) --build-arg tf_ver=$(TF_VER)-devel-gpu-py3 -f $(DOCKER_FILE) .
 
 bash:
 	$(DOCKER) run -it --privileged --rm $(MOUNT_DIR) $(MOUNT_WEBCAM) --net=host $(IMAGE_NAME) bash

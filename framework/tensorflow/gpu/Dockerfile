@@ -1,5 +1,5 @@
-ARG tf_ver=1.11.0
-FROM tensorflow/tensorflow:${tf_ver}-devel-gpu-py3
+ARG tf_ver=1.11.0-devel-gpu-py3
+FROM tensorflow/tensorflow:${tf_ver}
 
 RUN apt-get update && \
     apt-get install -y cmake \
