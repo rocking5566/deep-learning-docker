@@ -1,4 +1,4 @@
-ARG tf_ver=1.11.0-devel-gpu-py3
+ARG tf_ver=1.13.1-gpu-py3-jupyter
 FROM tensorflow/tensorflow:${tf_ver}
 
 RUN apt-get update && \
@@ -19,7 +19,11 @@ RUN apt-get update && \
     autoconf \
     automake \
     libtool \
-    swig
+    swig \
+    wget \
+    git \
+    zip \
+    zlib1g-dev
 
 # ============= OpenCV =============
 # OpenCV
@@ -56,35 +60,25 @@ RUN unzip opencv-${opencv_version}.zip && \
 #RUN pip3 install --upgrade --ignore-installed setuptools && pip3 install --no-cache-dir git+git://github.com/ppwwyyxx/tensorpack
 
 # ============= Tensorflow object detection API =============
-RUN cd /tensorflow \
-    && tensorflow/contrib/makefile/download_dependencies.sh
-
-# Build protobuf3 (Tensorflow object detection dependency)
-RUN cd /tensorflow/tensorflow/contrib/makefile/downloads/protobuf \
-    && ./autogen.sh \
-    && ./configure \
-    && make install
-RUN ldconfig
-
-ARG tf_model_ver=628b970a
-RUN git clone https://github.com/tensorflow/models.git /opt/tf_model && cd /opt/tf_model && git checkout ${tf_model_ver}
-RUN cd /opt/tf_model/research && protoc object_detection/protos/*.proto --python_out=.
-
-ENV PYTHONPATH='$PYTHONPATH:/opt/tf_model/research:/opt/tf_model/research/slim'
-
-# TF object detection API dependencies
+RUN apt-get install -y protobuf-compiler python-pil python-lxml python-tk
 RUN pip3 install beautifulsoup4 lxml cython pillow h5py contextlib2
+
+ARG tf_model_ver=v1.13.0
+RUN git clone https://github.com/tensorflow/models.git /opt/tf_model
+RUN cd /opt/tf_model && git checkout -b ${tf_model_ver}
+
+WORKDIR /opt/tf_model/research
+RUN wget -O protobuf.zip https://github.com/google/protobuf/releases/download/v3.0.0/protoc-3.0.0-linux-x86_64.zip
+RUN unzip protobuf.zip
+RUN ./bin/protoc object_detection/protos/*.proto --python_out=.
+ENV PYTHONPATH='$PYTHONPATH:/opt/tf_model/research:/opt/tf_model/research/slim'
 
 # install coco api for making tf_record and evaluating metric
 RUN git clone https://github.com/cocodataset/cocoapi.git /opt/cocoapi
 RUN cd /opt/cocoapi/PythonAPI && sed -i 's/python/python3/g' Makefile && make install
 
-# ============= Tensorflow Hub =============
+
 RUN pip3 install tensorflow-hub
 
-ENV TEST_TMPDIR /bazel_build
-
-WORKDIR /
-
-CMD jupyter notebook --allow-root --port=8888 --ip=127.0.0.1 & \
+CMD jupyter notebook --allow-root --port=8888 & \
     tensorboard --logdir=/log/tensorboard
