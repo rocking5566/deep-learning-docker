@@ -28,15 +28,15 @@ build:
 	$(DOCKER) build -t $(IMAGE_NAME) --build-arg tf_ver=$(TF_VER)-gpu-py3-jupyter -f $(DOCKER_FILE) .
 
 bash:
-	$(DOCKER) run -it --privileged -u $(shell id -u):$(shell id -g) --rm $(MOUNT_DIR) $(MOUNT_WEBCAM) --net=host $(IMAGE_NAME) bash
+	$(DOCKER) run -it -w /workspace --privileged -u $(shell id -u):$(shell id -g) --rm $(MOUNT_DIR) $(MOUNT_WEBCAM) --net=host $(IMAGE_NAME) bash
 
 x11:
 	xhost +
-	$(DOCKER) run -it --privileged -u $(shell id -u):$(shell id -g) --rm $(MOUNT_DIR) $(X11_DISPLAY) $(MOUNT_WEBCAM) --net=host $(IMAGE_NAME) bash
+	$(DOCKER) run -it -w /workspace --privileged -u $(shell id -u):$(shell id -g) --rm $(MOUNT_DIR) $(X11_DISPLAY) $(MOUNT_WEBCAM) --net=host $(IMAGE_NAME) bash
 	xhost -
 
 notebook:
-	$(DOCKER) run -it --privileged -u $(shell id -u):$(shell id -g) --rm $(MOUNT_DIR) --net=host $(IMAGE_NAME)
+	$(DOCKER) run -it -w /workspace --privileged -u $(shell id -u):$(shell id -g) --rm $(MOUNT_DIR) --net=host $(IMAGE_NAME)
 
 dev:
 ifeq ($(shell docker ps -aqf name=${CONTAINER_NAME}),)
