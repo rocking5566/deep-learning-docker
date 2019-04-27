@@ -1,9 +1,10 @@
 DATA?="${HOME}/Data"
 DOCKER_FILE=Dockerfile
 DOCKER=nvidia-docker
-TF_VER?=1.11.0
-IMAGE_NAME=tensorflow:$(TF_VER)
+TF_VER?=1.13.1
+IMAGE_NAME=rocking_tensorflow:$(TF_VER)
 REPO_ROOT?=$(shell git rev-parse --show-toplevel)
+CONTAINER_NAME="tensorflow_docker_test"
 TMP_DIR=/tmp
 
 X11_DISPLAY=--env DISPLAY=$(DISPLAY) \
@@ -24,19 +25,22 @@ help:
 	@echo "'make notebook' will run docker container for ipython notebook & Tensorboard"
 
 build:
-	$(DOCKER) build -t $(IMAGE_NAME) --build-arg tf_ver=$(TF_VER)-devel-gpu-py3 -f $(DOCKER_FILE) .
+	$(DOCKER) build -t $(IMAGE_NAME) --build-arg tf_ver=$(TF_VER)-gpu-py3-jupyter -f $(DOCKER_FILE) .
 
 bash:
-	$(DOCKER) run -it --privileged --rm $(MOUNT_DIR) $(MOUNT_WEBCAM) --net=host $(IMAGE_NAME) bash
+	$(DOCKER) run -it -w /workspace --privileged -u $(shell id -u):$(shell id -g) --rm $(MOUNT_DIR) $(MOUNT_WEBCAM) --net=host $(IMAGE_NAME) bash
 
 x11:
 	xhost +
-	$(DOCKER) run -it --privileged --rm $(MOUNT_DIR) $(X11_DISPLAY) $(MOUNT_WEBCAM) --net=host $(IMAGE_NAME) bash
+	$(DOCKER) run -it -w /workspace --privileged -u $(shell id -u):$(shell id -g) --rm $(MOUNT_DIR) $(X11_DISPLAY) $(MOUNT_WEBCAM) --net=host $(IMAGE_NAME) bash
 	xhost -
 
-ipython:
-	$(DOCKER) run -it --rm $(MOUNT_DIR) $(IMAGE_NAME) ipython
-
 notebook:
-	$(DOCKER) run -it --rm $(MOUNT_DIR) --net=host $(IMAGE_NAME)
+	$(DOCKER) run -it -w /workspace --privileged -u $(shell id -u):$(shell id -g) --rm $(MOUNT_DIR) --net=host $(IMAGE_NAME)
 
+dev:
+ifeq ($(shell docker ps -aqf name=${CONTAINER_NAME}),)
+	$(DOCKER) run -it -w /workspace --privileged -u $(shell id -u):$(shell id -g) --name ${CONTAINER_NAME} $(MOUNT_DIR) --net=host $(IMAGE_NAME) bash
+else
+	$(DOCKER) start -i ${CONTAINER_NAME}
+endif
