@@ -81,4 +81,4 @@ RUN cd /opt/cocoapi/PythonAPI && sed -i 's/python/python3/g' Makefile && make in
 RUN pip3 install tensorflow-hub
 WORKDIR /
 CMD jupyter notebook --allow-root --port=8888 & \
-    tensorboard --logdir=/log/tensorboard
+    tensorboard --logdir=/workspace/tensorboard
