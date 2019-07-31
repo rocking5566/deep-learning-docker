@@ -1,7 +1,7 @@
 DATA?="${HOME}/Data"
 DOCKER_FILE=Dockerfile
 DOCKER=nvidia-docker
-TF_VER?=1.13.1
+TF_VER?=2.0.0b1
 IMAGE_NAME=rocking_tensorflow:$(TF_VER)
 REPO_ROOT?=$(shell git rev-parse --show-toplevel)
 CONTAINER_NAME="tensorflow_docker_test"

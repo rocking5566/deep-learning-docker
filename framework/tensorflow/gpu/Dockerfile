@@ -1,6 +1,7 @@
-ARG tf_ver=1.13.1-gpu-py3-jupyter
+ARG tf_ver=2.0.0b1-gpu-py3-jupyter
 FROM tensorflow/tensorflow:${tf_ver}
 
+ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
     apt-get install -y cmake \
     libgl1-mesa-glx \
