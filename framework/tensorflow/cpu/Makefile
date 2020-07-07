@@ -1,7 +1,7 @@
 DATA?="${HOME}/Data"
 DOCKER_FILE=../gpu/Dockerfile
 DOCKER=docker
-TF_VER?=1.11.0
+TF_VER?=2.1.0
 IMAGE_NAME=tensorflow:$(TF_VER)-cpu
 REPO_ROOT?=$(shell git rev-parse --show-toplevel)
 

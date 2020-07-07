@@ -1,7 +1,7 @@
 DATA?="${HOME}/Data"
 DOCKER_FILE=Dockerfile
 DOCKER=nvidia-docker
-TF_VER?=1.13.1
+TF_VER?=2.1.0
 IMAGE_NAME=rocking_tensorflow:$(TF_VER)
 REPO_ROOT?=$(shell git rev-parse --show-toplevel)
 CONTAINER_NAME="tensorflow_docker_test"
@@ -32,7 +32,7 @@ bash:
 
 x11:
 	xhost +
-	$(DOCKER) run -it -w /workspace --privileged -u $(shell id -u):$(shell id -g) --rm $(MOUNT_DIR) $(X11_DISPLAY) $(MOUNT_WEBCAM) --net=host $(IMAGE_NAME) bash
+	$(DOCKER) run -it -w /workspace --privileged --rm $(MOUNT_DIR) $(X11_DISPLAY) $(MOUNT_WEBCAM) --net=host $(IMAGE_NAME) bash
 	xhost -
 
 notebook:
